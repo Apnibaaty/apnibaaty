@@ -1,0 +1,17 @@
+# 🐍 Python
+*.pyc
+__pycache__/
+
+# 🚫 Environment
+venv/
+apienv
+.env
+
+# 🗂 SQLite DB
+db.sqlite3
+
+# 💻 Mac system files (optional)
+.DS_Store
+
+# 🧪 Flask migration logs (optional but safe)
+migrations/

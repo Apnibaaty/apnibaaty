@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Chat History – Talkitive AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="nav">
+        <h1 class="logo">ApniBaaty</h1>
+        <!-- <a href="{{ url_for('auth.logout') }}" class="btn">Logout</a> -->
+    </div>
+</header>
+
+{% include 'navigation.html' %}
+
+<section class="history">
+    <h2>Your Conversations</h2>
+    {% if history %}
+        <ul class="history-list">
+            {% for character, msgs in history.items() %}
+            <li>
+                <a href="{{ url_for('auth.chat_room', character=character) }}">
+                    <strong>{{ character.title() }}</strong>
+                    <!-- <span class="msg-count">{{ msgs | length }} messages</span> -->
+                    <span class="last-msg">Last: “{{ msgs[0].content[:40] }}...”</span>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>You haven’t chatted with anyone yet. Start a conversation!</p>
+    {% endif %}
+</section>
+
+<footer>
+    <p>&copy; 2025 ApniBaaty. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

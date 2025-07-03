@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Account - Talkitive AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<header>
+    <div class="nav">
+        <h1 class="logo">ApniBaaty</h1>
+    </div>
+</header>
+
+{% include 'navigation.html' %}
+
+<section class="account-section">
+    <h2>My Account</h2>
+
+    <div class="account-box">
+        <ul>
+            <li><strong>Name:</strong> {{ user.name }}</li>
+            <li><strong>Email:</strong> {{ user.email }}</li>
+            <li><strong>Age:</strong> {{ user.age }}</li>
+            <li><strong>Gender:</strong> {{ user.gender or 'Not set' }}</li>
+            <li><strong>AI Preference:</strong> {{ user.ai_preference or 'Not set' }}</li>
+            <!-- <li><strong>Premium:</strong> {{ 'Yes' if user.is_premium else 'No' }}</li> -->
+        </ul>
+
+        <div class="account-actions">
+            <a href="{{ url_for('auth.edit_profile') }}" class="btn">Edit Profile</a>
+            <a href="{{ url_for('auth.change_password') }}" class="btn">Change Password</a>
+            <a href="{{ url_for('auth.logout') }}" class="btn logout">Logout</a>
+        </div>
+    </div>
+
+    <div class="account-info">
+        <h3>📜 Terms & Conditions</h3>
+        <p>
+            By using ApniBaaty, you agree that you are 18 years or older. You must not misuse the chat system
+            (no hate speech, harassment, impersonation, or illegal activity). We are not responsible for any
+            emotional decisions influenced by AI conversations.
+        </p>
+        <p>
+            All messages are logged to ensure safety and improve experience. Continued use implies your consent to
+            our policies. You are responsible for your own data usage, and message credits are non-refundable.
+        </p>
+
+        <h3>📧 Contact Us</h3>
+        <p>
+            For questions, concerns, or reporting abuse, please contact our team at:
+            <a href="mailto:talkitiveai@gmail.com">talkitiveai@gmail.com</a>
+        </p>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 ApniBaaty. All rights reserved.</p>
+</footer>
+
+</body>
+</html>

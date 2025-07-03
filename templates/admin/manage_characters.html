@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Characters</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <h1>Manage Characters</h1>
+
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Tags</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for char in characters %}
+                <tr>
+                    <td>{{ char.name }}</td>
+                    <td>{{ char.gender }}</td>
+                    <td>{{ char.tags }}</td>
+                    <td>
+                        <a href="{{ url_for('admin.edit_character', char_id=char.id) }}" class="edit-btn">✏️ Edit</a>
+                        <form action="{{ url_for('admin.delete_character', char_id=char.id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Delete this character?');">
+                            <button type="submit" class="delete-btn">🗑️ Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="admin-links" style="margin-top: 20px;">
+            <a href="{{ url_for('admin.dashboard') }}">← Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

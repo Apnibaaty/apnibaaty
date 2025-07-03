@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Character</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <h1>Edit Character: {{ character.name }}</h1>
+
+        <form method="POST" action="{{ url_for('admin.edit_character', char_id=character.id) }}">
+            <div class="form-group">
+                <label>Name:</label>
+                <input type="text" name="name" value="{{ character.name }}" required>
+            </div>
+            <div class="form-group">
+                <label>Description:</label>
+                <textarea name="description" rows="3" required>{{ character.description }}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Gender:</label>
+                <input type="text" name="gender" value="{{ character.gender }}">
+            </div>
+            <div class="form-group">
+                <label>Tags (comma-separated):</label>
+                <input type="text" name="tags" value="{{ character.tags }}">
+            </div>
+            <div class="form-group">
+                <label>Appearance Description:</label>
+                <textarea name="appearance_description" rows="3">{{ character.appearance_description }}</textarea>
+            </div>
+
+            <button type="submit" class="btn">💾 Save Changes</button>
+        </form>
+
+        <div class="admin-links" style="margin-top: 20px;">
+            <a href="{{ url_for('admin.manage_characters') }}">← Back to Characters</a>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ user.name }} - Chat History</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <h1>Chat History: {{ user.name }}</h1>
+
+        {% if messages %}
+        <ul>
+            {% for msg in messages %}
+                <li><strong>{{ msg.sender }}:</strong> {{ msg.content }}</li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <p>No messages found.</p>
+        {% endif %}
+
+        <div class="admin-links" style="margin-top: 20px;">
+            <a href="{{ url_for('admin.user_detail', user_id=user.id) }}">⬅ Back to User Details</a>
+        </div>
+    </div>
+</body>
+</html>

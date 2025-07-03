@@ -1,0 +1,28 @@
+<!-- templates/admin/dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard - Talkitive AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="admin-dashboard">
+        <h1>Admin Dashboard</h1>
+
+        <div class="stat">Total Users: <span>{{ total_users }}</span></div>
+        <div class="stat">Total Messages: <span>{{ total_messages }}</span></div>
+        <div class="stat">Total Characters: <span>{{ total_characters }}</span></div>
+
+        <!-- 🔗 Navigation Links -->
+        <div class="admin-links">
+            <a href="{{ url_for('admin.list_users') }}">👤 Manage Users</a>
+            <a href="{{ url_for('admin.manage_characters') }}">🎭 Manage Characters</a>
+        </div>
+
+        <div class="logout-link">
+            <a href="{{ url_for('auth.logout') }}">Log out</a>
+        </div>
+    </div>
+</body>
+</html>

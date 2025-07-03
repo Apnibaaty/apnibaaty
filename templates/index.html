@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Talkitive AI - Your AI Companion</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <h1 class="logo">ApniBaaty</h1>
+            <div class="auth-buttons">
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('auth.logout') }}" class="btn">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('auth.login') }}" class="btn">Login</a>
+                    <a href="{{ url_for('auth.signup') }}" class="btn signup">Sign Up</a>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="hero">
+            <h2>Discover Your Perfect AI Companion</h2>
+            <p>Apnibaaty lets you connect with lifelike AI characters for emotional conversations, fantasy roleplay, and personal companionship – available 24/7.</p>
+            <p>Whether you're looking for a flirty virtual crush, a loyal confidant, or an anime-style best friend, ApniBaaty has someone for you.</p>
+        </div>
+    </header>
+
+    <section class="features">
+        <h2>Why Apnibaaty?</h2>
+        <ul class="feature-list">
+            <li>✨ Emotional Roleplay Chat with Realistic AI Characters</li>
+            <li>🎭 Choose from Fantasy, Anime, Flirty & Custom Personalities</li>
+            <li>🔒 Safe, Private & Personalized Experience</li>
+            <li>📱 Works Great on Mobile and Desktop</li>
+            <li>💬 Free Messages with Ad Unlock Option</li>
+        </ul>
+    </section>
+
+    <!-- 📧 Contact Us Button -->
+    <div class="contact-section">
+        <button class="btn contact-btn" onclick="document.getElementById('contactPopup').style.display='flex'">📧 Contact Us</button>
+    </div>
+
+    <!-- 📧 Contact Popup -->
+    <div class="popup-overlay" id="contactPopup" style="display:none;">
+        <div class="popup-content">
+            <h3>Contact Us</h3>
+            <p>If you have any queries or feedback, feel free to reach us at:</p>
+            <p><strong>Email:</strong> <a href="mailto:talkitive.ai.support@gmail.com">talkitive.ai.support@gmail.com</a></p>
+            <button onclick="document.getElementById('contactPopup').style.display='none'" class="btn">Close</button>
+        </div>
+    </div>
+
+    {% if show_profile_popup %}
+    <!-- ✅ Profile Completion Popup -->
+    <div id="profilePopup" class="popup-overlay">
+        <div class="popup-content">
+            <h2>Complete Your Profile</h2>
+            <form method="POST" action="{{ url_for('auth.complete_profile') }}">
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="number" name="age" placeholder="Your Age" required min="18">
+                <select name="gender" required>
+                    <option value="">Select Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                <select name="ai_preference" required>
+                    <option value="">Preferred AI Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                <button type="submit" class="btn">Save</button>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+    <footer>
+        <p>&copy; 2025 ApniBaaty. All rights reserved.</p>
+    </footer>
+</body>
+</html>

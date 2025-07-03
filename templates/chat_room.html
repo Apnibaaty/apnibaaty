@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ character_name }} Chat - Talkitive AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="chat-background" style="background-image: url('{{ url_for('static', filename='img/' + character_img) }}');"></div>
+
+    <div class="chat-container">
+        <div class="chat-header">Chatting with {{ character_name }}</div>
+
+        <div class="chat-box" id="chatBox">
+            {% for msg in messages %}
+                <div class="message {% if msg.sender == 'user' %}user-message{% else %}ai-message{% endif %}">
+                    {{ msg.content }}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="chat-input-area">
+            <input type="text" id="messageInput" placeholder="Type your message..." autocomplete="off">
+            <button id="sendBtn">Send</button>
+        </div>
+    </div>
+
+    <!-- Watch Ad Popup -->
+    <div class="popup-overlay" id="adPopup" style="display: none;">
+        <div class="popup-content">
+            <h2>Free Chat Limit Reached</h2>
+            <p id="ads-progress">Watch 5 short ads to unlock 15 more messages.</p>
+            <button id="watchAdBtn" class="btn">Watch Ad</button>
+        </div>
+    </div>
+
+    <script>
+    const sendBtn = document.getElementById('sendBtn');
+    const messageInput = document.getElementById('messageInput');
+    const chatBox = document.getElementById('chatBox');
+    const adPopup = document.getElementById('adPopup');
+    const watchAdBtn = document.getElementById('watchAdBtn');
+    const adsProgress = document.getElementById('ads-progress');
+
+    async function fetchAdStatusAndShowPopup() {
+        try {
+            const res = await fetch("{{ url_for('auth.ad_status') }}");
+            const data = await res.json();
+
+            if (data.remaining_messages <= 0 && data.ads_watched < 5) {
+                adsProgress.innerText = `Watch ${5 - data.ads_watched} short ads to unlock Free Chats.`;
+                adPopup.style.display = 'flex';
+            } else {
+                adPopup.style.display = 'none';
+            }
+        } catch (err) {
+            console.error("Failed to fetch ad status", err);
+        }
+    }
+
+    function typeText(element, text, speed = 20) {
+        let index = 0;
+        const interval = setInterval(() => {
+            if (index < text.length) {
+                element.textContent += text.charAt(index);
+                index++;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } else {
+                clearInterval(interval);
+            }
+        }, speed);
+    }
+
+    async function sendMessage() {
+        const msg = messageInput.value.trim();
+        if (!msg) return;
+
+        const userDiv = document.createElement('div');
+        userDiv.className = 'message user-message';
+        userDiv.textContent = msg;
+        chatBox.appendChild(userDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        messageInput.value = '';
+
+        try {
+            const response = await fetch("{{ url_for('auth.send_message', character=character_name) }}", {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: msg })
+            });
+
+            if (response.status === 403) {
+                await fetchAdStatusAndShowPopup();  // Show correct popup message
+                return;
+            }
+
+            const data = await response.json();
+
+            const aiDiv = document.createElement('div');
+            aiDiv.className = 'message ai-message';
+            chatBox.appendChild(aiDiv);
+
+            typeText(aiDiv, data.reply);  // 🟢 Auto-typing animation
+        } catch (err) {
+            alert("Failed to get response from AI.");
+            console.error(err);
+        }
+    }
+
+    sendBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        sendMessage();
+    });
+
+    messageInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            sendMessage();
+        }
+    });
+
+    watchAdBtn.addEventListener('click', async () => {
+        watchAdBtn.disabled = true;
+        watchAdBtn.textContent = "Watching ad...";
+
+        await new Promise(resolve => setTimeout(resolve, 3000));  // Simulate 3-sec ad
+
+        try {
+            const res = await fetch("{{ url_for('auth.ads_reward') }}", { method: "POST" });
+            const data = await res.json();
+
+            if (data.message.includes("earned")) {
+                adPopup.style.display = 'none';
+                alert(data.message);
+            } else {
+                await fetchAdStatusAndShowPopup();
+                alert(data.message);
+            }
+        } catch (err) {
+            alert("Error updating ad progress.");
+            console.error(err);
+        }
+
+        watchAdBtn.disabled = false;
+        watchAdBtn.textContent = "Watch Ad";
+    });
+
+    fetchAdStatusAndShowPopup();  // Run on page load
+    </script>
+</body>
+</html>

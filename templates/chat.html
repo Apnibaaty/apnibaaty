@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat - Talkitive AI</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="nav">
+            <h1 class="logo">ApniBaaty</h1>
+        </div>
+    </header>
+
+    {% include 'navigation.html' %}
+
+    <section class="create-character-btn">
+        <button class="btn" onclick="document.getElementById('createModal').style.display='block'">
+            ➕ Create New Character
+        </button>
+    </section>
+
+    <section class="characters">
+        <h2>Recommended Characters</h2>
+        <div class="card-grid">
+            {% for character in characters %}
+            <a href="{{ url_for('auth.chat_room', character=character.name) }}" class="card-link">
+                <div class="card">
+                    <img src="{{ url_for('static', filename='img/' ~ character.img) }}" alt="{{ character.name }}">
+                    <h3>{{ character.name }}</h3>
+                    <p>{{ character.desc }}</p>
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Character Creation Modal -->
+    <div id="createModal" class="popup-overlay">
+        <div class="popup-content">
+            <h2>Create New AI Character</h2>
+            <form method="POST" action="{{ url_for('auth.create_character') }}">
+                <input type="text" name="name" placeholder="Character Name" required>
+                <textarea name="desc" placeholder="Character Personality / Mood" required></textarea>
+                <select name="gender" required>
+                    <option value="" disabled selected>Choose Gender</option>
+                    <option value="female">Female</option>
+                    <option value="male">Male</option>
+                </select>
+                <input type="text" name="tags" placeholder="Tags (e.g. loving, funny, angry)">
+                <textarea name="appearance" placeholder="Appearance Description (used for AI image generation)" required></textarea>
+                <button type="submit" class="btn">Save Character</button>
+                <button type="button" class="btn" onclick="document.getElementById('createModal').style.display='none'">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2025 ApniBaaty. All rights reserved.</p>
+    </footer>
+</body>
+</html>
