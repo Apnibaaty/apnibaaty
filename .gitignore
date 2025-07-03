@@ -11,7 +11,7 @@ apienv
 db.sqlite3
 
 # 💻 Mac system files (optional)
-.DS_Store
+# .DS_Store
 
 # 🧪 Flask migration logs (optional but safe)
 migrations/
