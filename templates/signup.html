@@ -2,53 +2,68 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sign Up - Talkitive AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Apnibaaty</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .terms-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 14px;
+            font-size: 14px;
+            justify-content: flex-start;
+        }
+        .terms-row a {
+            color: #ff80ab;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-    <div class="auth-container">
-        <h2>Sign Up</h2>
+    <div class="popup-overlay" style="background: linear-gradient(135deg, #0e0e0e, #1c1c1c);">
+        <div class="popup-content">
+            <h2>Sign Up</h2>
+            <form method="POST" action="{{ url_for('auth.signup') }}" onsubmit="return validateTerms()">
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+                <input type="number" name="age" placeholder="Age (18+ only)" min="18" required>
 
-        <form method="POST" action="{{ url_for('auth.signup') }}" onsubmit="return validateTerms()">
-            <input type="text" name="name" placeholder="Name" required><br>
-            <input type="email" name="email" placeholder="Email" required><br>
-            <input type="password" name="password" placeholder="Password" required><br>
-            <input type="number" name="age" placeholder="Age (18+ only)" min="18" required><br>
+                <div class="terms-row">
+                    <input type="checkbox" id="termsCheckbox">
+                    <label for="termsCheckbox">I agree to the <a onclick="showTerms()">Terms and Conditions</a></label>
+                </div>
 
-            <label style="display: block; margin: 10px 0; font-size: 14px;">
-                <input type="checkbox" id="termsCheckbox">
-                I agree to the <a href="#" onclick="showTerms()">Terms and Conditions</a>
-            </label>
-
-            <button type="submit">Sign Up</button>
-        </form>
-
-        <p>Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+                <button type="submit" class="btn">Sign Up</button>
+            </form>
+            <p style="margin-top: 14px;">Already have an account? <a href="{{ url_for('auth.login') }}">Login</a></p>
+        </div>
     </div>
 
     <!-- Terms Modal -->
-    <div id="termsModal" class="modal">
-    <div class="modal-content">
-        <h3>Terms and Conditions</h3>
-        <div style="text-align: left; max-height: 300px; overflow-y: auto; font-size: 14px;">
-            <p>By creating an account on Apnibaaty, you agree to the following:</p>
-            <ul style="padding-left: 20px;">
-                <li>You are at least 18 years old.</li>
-                <li>You understand this is a fictional, AI-powered companion/chat platform.</li>
-                <li>You will not misuse or exploit the system, characters, or other users.</li>
-                <li>You will not use Talkitive AI for illegal or harmful activities.</li>
-                <li>All data (chats, preferences, usage) may be stored and used to improve the platform.</li>
-                <li>You are responsible for your own interactions with AI characters.</li>
-                <li>Talkitive AI is for entertainment only and not a substitute for professional support.</li>
-                <li>We may limit access or remove users who violate these terms without prior notice.</li>
-                <li>All character content is fictional and any resemblance to real persons is coincidental.</li>
-            </ul>
-            <p style="margin-top: 10px;">By ticking the checkbox, you confirm that you agree to these Terms and Conditions.</p>
+    <div class="popup-overlay" id="termsModal" style="display:none;">
+        <div class="popup-content" style="max-width: 600px;">
+            <h2>Terms and Conditions</h2>
+            <div style="text-align: left; max-height: 300px; overflow-y: auto; font-size: 14px;">
+                <p>By creating an account on Apnibaaty, you agree to the following:</p>
+                <ul style="padding-left: 20px;">
+                    <li>You are at least 18 years old.</li>
+                    <li>You understand this is a fictional, AI-powered companion/chat platform.</li>
+                    <li>You will not misuse or exploit the system, characters, or other users.</li>
+                    <li>You will not use Apnibaaty for illegal or harmful activities.</li>
+                    <li>All data (chats, preferences, usage) may be stored and used to improve the platform.</li>
+                    <li>You are responsible for your own interactions with AI characters.</li>
+                    <li>Apnibaaty is for entertainment only and not a substitute for professional support.</li>
+                    <li>We may limit access or remove users who violate these terms without prior notice.</li>
+                    <li>All character content is fictional and any resemblance to real persons is coincidental.</li>
+                </ul>
+                <p style="margin-top: 10px;">By ticking the checkbox, you confirm that you agree to these Terms and Conditions.</p>
+            </div>
+            <button class="btn" onclick="closeTerms()">Close</button>
         </div>
-        <button onclick="closeTerms()">Close</button>
     </div>
-</div>
-
 
     <script>
         function validateTerms() {
@@ -60,7 +75,7 @@
         }
 
         function showTerms() {
-            document.getElementById('termsModal').style.display = 'block';
+            document.getElementById('termsModal').style.display = 'flex';
         }
 
         function closeTerms() {
