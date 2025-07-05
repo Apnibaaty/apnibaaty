@@ -1,12 +1,13 @@
 from flask import Flask, render_template, redirect, url_for, request
 from models import db, User, Message, Character  # ✅ include Character
 from flask_login import LoginManager, current_user, login_required
+from flask import send_from_directory
 from admin.routes import admin
 from flask_migrate import Migrate
 from auth.routes import auth
 from models import Character
-import random
 from main.routes import main
+import random
 
 
 app = Flask(__name__)
@@ -20,6 +21,10 @@ migrate = Migrate(app, db)
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 login_manager.init_app(app)
+
+@app.route('/ads.txt')
+def ads_txt():
+    return send_from_directory('.', 'ads.txt', mimetype='text/plain')
 
 @login_manager.user_loader
 def load_user(user_id):
