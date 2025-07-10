@@ -45,6 +45,8 @@
     <!-- 📧 Contact Us Button -->
     <div class="contact-section">
         <button class="btn contact-btn" onclick="document.getElementById('contactPopup').style.display='flex'">📧 Contact Us</button>
+        <!-- Styled Privacy Policy Button -->
+        <a href="{{ url_for('privacy') }}" class="btn contact-btn" style="margin-left: 10px;">🔒 Privacy Policy</a>
     </div>
 
     <!-- 📧 Contact Popup -->
@@ -96,6 +98,7 @@
 </div>
 
     <footer>
+        <!-- <a href="{{ url_for('privacy') }}">Privacy Policy</a> -->
         <p>&copy; 2025 ApniBaaty. All rights reserved.</p>
     </footer>
 </body>

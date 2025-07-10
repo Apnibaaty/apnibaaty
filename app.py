@@ -94,6 +94,11 @@ def character_chat(character):
         messages=messages
     )
 
+@app.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
